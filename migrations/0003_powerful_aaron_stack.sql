@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX `detalle_orden_orden_id_product_id_unique` ON `detalle_orden` (`orden_id`,`product_id`);
