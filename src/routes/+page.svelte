@@ -1,9 +1,14 @@
 <script lang="ts">
-    export let data;
-    const { users } = data;
+
+	import { enhance } from "$app/forms";
+
+
+	export let data;
 </script>
 
+<h1>Hi, {data.user.email}!</h1>
+<p>Your user ID is {data.user.id}.</p>
 
-{#each users as user}
-    <p>{user.username}</p>
-{/each}
+<form method="post" use:enhance>
+	<button>Sign out</button>
+</form>

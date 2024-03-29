@@ -97,7 +97,7 @@ export const images = sqliteTable('images', {
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
 	publicId: text('public_id'),
-	secureUrl: text('secure_url'),
+	secureUrl: text('secure_url').notNull(),
 	createdAt: text('created_at')
 		.notNull()
 		.default(sql`(CURRENT_TIMESTAMP)`),
@@ -180,7 +180,7 @@ export const ordenesRelations = relations(ordenes, ({ many, one }) => ({
 	detalle: many(detalleOrden),
 	usuario: one(usuarios, {
 		fields: [ordenes.userId],
-		references: [usuarios.id],
+		references: [usuarios.id]
 	})
 }));
 
@@ -222,17 +222,19 @@ export const detalleOrdenRelations = relations(detalleOrden, ({ one }) => ({
 	})
 }));
 
-
 export const usuarios = sqliteTable('users', {
 	id: text('id')
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
-	roleId: text('role_id', { enum:['admin', 'asesor', 'cliente', 'operador'] }).notNull().default('cliente'),
+	roleId: text('role_id', { enum: ['admin', 'asesor', 'cliente', 'operador'] })
+		.notNull()
+		.default('cliente'),
 	name: text('name').notNull(),
 	phone: text('phone').notNull(),
 	email: text('email').notNull().unique(),
-	docType: text('doc_type', { enum: ['Cedula', 'Cedula_de_extranjería', 'NIT', 'Pasaporte'] }).
-		notNull(),
+	docType: text('doc_type', {
+		enum: ['Cedula', 'Cedula_de_extranjería', 'NIT', 'Pasaporte']
+	}).notNull(),
 	numDoc: text('num_doc').notNull().unique(),
 	departamento: text('departamento').notNull(),
 	ciudad: text('ciudad').notNull(),
@@ -247,7 +249,7 @@ export const usuarios = sqliteTable('users', {
 	updatedAt: text('updated_at')
 		.notNull()
 		.default(sql`(CURRENT_TIMESTAMP)`)
-})
+});
 
 export const usuariosRelations = relations(usuarios, ({ many, one }) => ({
 	ordenes: many(ordenes),
@@ -264,7 +266,7 @@ export const usuariosRelations = relations(usuarios, ({ many, one }) => ({
 		references: [zonas.id],
 		relationName: 'zona'
 	})
-}))
+}));
 
 export const zonas = sqliteTable('zones', {
 	id: integer('id').primaryKey(),
@@ -276,8 +278,65 @@ export const zonas = sqliteTable('zones', {
 	updatedAt: text('updated_at')
 		.notNull()
 		.default(sql`(CURRENT_TIMESTAMP)`)
-})
+});
 
 export const zonasRelations = relations(zonas, ({ many }) => ({
 	ordenes: many(usuarios)
-}))
+}));
+
+export const departamentos = sqliteTable('departamentos', {
+	id: text('id')
+		.primaryKey()
+		.$defaultFn(() => crypto.randomUUID()),
+	departamento: text('departamento').notNull().unique()
+});
+
+export const departamentosRelations = relations(departamentos, ({ many }) => ({
+	ciudades: many(ciudades)
+}));
+
+export const ciudades = sqliteTable('ciudades', {
+	id: integer('id').primaryKey(),
+	ciudad: text('ciudad').notNull(),
+	codigo: text('codigo').notNull().unique(),
+	departamentoId: text('departamento_id').notNull()
+});
+
+export const ciudadesRelations = relations(ciudades, ({ one }) => ({
+	departamento: one(departamentos, {
+		fields: [ciudades.departamentoId],
+		references: [departamentos.id]
+	})
+}));
+
+export const users = sqliteTable('usuarios', {
+	id: text('id').primaryKey().notNull(),
+	email: text('username').notNull().unique(),
+	password: text('password').notNull(),
+	createdAt: text('created_at').default(sql`(CURRENT_TIMESTAMP)`),
+});
+
+export const usersRelation = relations(users, ({ many, one }) => ({
+	session: many(session),
+	datos: one(usuarios, {
+		fields: [users.email],
+		references: [usuarios.email],
+	})
+}));
+
+export const session = sqliteTable("session", {
+	id: text("id").notNull().primaryKey(),
+	userId: text("user_id")
+		.notNull()
+		.references(() => users.id),
+	expiresAt: integer("expires_at").notNull()
+});
+
+export const sessionRelation = relations(session, ({ one }) => ({
+	user: one(users, {
+		fields: [session.userId],
+		references: [users.id]
+	})
+}));
+
+export type UserInsertSchema = typeof users.$inferInsert;

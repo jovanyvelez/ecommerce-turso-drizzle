@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "5",
-      "when": 1711384748355,
-      "tag": "0000_shocking_the_fury",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "5",
-      "when": 1711482442991,
-      "tag": "0001_cuddly_invisible_woman",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "5",
-      "when": 1711485645545,
-      "tag": "0002_melted_roland_deschain",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1711487071017,
-      "tag": "0003_powerful_aaron_stack",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "5",
-      "when": 1711500085120,
-      "tag": "0004_tired_famine",
+      "when": 1711646937506,
+      "tag": "0000_cultured_johnny_blaze",
       "breakpoints": true
     }
   ]
