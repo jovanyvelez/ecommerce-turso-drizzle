@@ -4,8 +4,13 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			user: import("lucia").User | null;
-			session: import("lucia").Session | null;
+			user: import('lucia').User | null;
+			session: import('lucia').Session | null;
+			usuario: {
+				id: string;
+				roleId: 'admin' | 'asesor' | 'cliente' | 'operador';
+				name: string;
+			}|null;
 		}
 		// interface PageData {}
 		// interface PageState {}

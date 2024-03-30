@@ -1,4 +1,5 @@
 import { lucia } from "$lib/server/auth/lucia";
+import { buscarUsuarioPorEmail } from "$lib/server/orm/queries";
 import type { Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
@@ -24,6 +25,7 @@ export const handle: Handle = async ({ event, resolve }) => {
 			...sessionCookie.attributes
 		});
 	}
+	event.locals.usuario = await buscarUsuarioPorEmail( user && user.email? user.email : null);
 	event.locals.user = user;
 	event.locals.session = session;
 	return resolve(event);

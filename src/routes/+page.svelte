@@ -6,9 +6,11 @@
 	export let data;
 </script>
 
+
+
 <h1>Hi, {data.user.email}!</h1>
 <p>Your user ID is {data.user.id}.</p>
 
 <form method="post" use:enhance>
-	<button>Sign out</button>
+	<button class="btn btn-primary">Sign out</button>
 </form>
