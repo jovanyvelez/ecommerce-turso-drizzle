@@ -1,4 +1,5 @@
 import { lucia } from "$lib/server/auth/lucia";
+import { productosAleatorios } from "$lib/server/orm/queries.js";
 import { fail, redirect } from "@sveltejs/kit";
 
 
@@ -8,7 +9,9 @@ export const load = async (event) => {
 	}
 
 	return {
-		user: event.locals.user
+		user: event.locals.user,
+		datos: await productosAleatorios(),
+		userType: event.locals.usuario?.roleId,
 	};
 };
 

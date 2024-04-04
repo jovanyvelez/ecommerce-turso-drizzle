@@ -1,7 +1,9 @@
 import { mainCategories } from "$lib/server/orm/queries";
 
 export const load = async ({locals}) => {
+
     const categories = await mainCategories();
+
 
     let user, userType;
     if (!locals.usuario) {
@@ -14,3 +16,7 @@ export const load = async ({locals}) => {
     userType = locals.usuario.roleId;
     return { categories, user, userType };
 }
+
+
+
+

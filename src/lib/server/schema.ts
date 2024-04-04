@@ -96,6 +96,7 @@ export const images = sqliteTable('images', {
 	id: text('id')
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
+	main: integer('main', { mode: 'boolean' }),
 	publicId: text('public_id'),
 	secureUrl: text('secure_url').notNull(),
 	createdAt: text('created_at')
