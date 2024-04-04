@@ -3,8 +3,6 @@ node_modules
 /build
 /.svelte-kit
 /package
-/src/lib/data
-/migrations
 .gitignore
 .env
 .env.*
