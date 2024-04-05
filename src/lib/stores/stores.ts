@@ -1,9 +1,9 @@
 import { writable } from 'svelte/store';
-import type { Product1, ProductStore, appuser } from '$lib/types/Interfaces_or_types';
+import type { Product, ProductStore, appuser } from '$lib/types/Interfaces_or_types';
 import { browser } from '$app/environment';
 
 
-export const products = writable<Product1[]>( [] );
+export const products = writable<Product[]>( [] );
 
 export const userApp = writable<appuser | null>(null);
 

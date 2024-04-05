@@ -8,8 +8,8 @@
     "codigo": string,
     "ean_code" : string | null,
     "tax": number,
-    "prices": { "name": string, "price": number }[],
-    "images": { "name": string, "secure_url": string }[]
+    "precios": { "name": string, "price": number }[],
+    "imagenes": { "name": string, "secureUrl": string }[]
     ,
   }
 

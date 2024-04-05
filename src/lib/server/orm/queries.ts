@@ -255,12 +255,12 @@ export async function getRandomProductsByListCategories(categoria: Array<string>
 
 export async function getProductsByListCategories(
 	categoria: Array<string>,
-	pageSize : number,
-	queryPage : number
+	pageSize: number,
+	queryPage: number
 ) {
 	const products = await db.query.productos.findMany({
 		where: inArray(productos.categoriaId, categoria),
-		columns: { id: true, name: true, quantity: true, description: true },
+		columns: { id: true, name: true, quantity: true, description: true, tax: true },
 		with: {
 			imagenes: {
 				where: eq(images.main, true),
@@ -279,13 +279,16 @@ export async function getProductsByListCategories(
 		offset: pageSize * (queryPage - 1)
 	});
 
-	const cantidad = await db.select({count: count()}).from(productos).where(inArray(productos.categoriaId, categoria));
+	const cantidad = await db
+		.select({ count: count() })
+		.from(productos)
+		.where(inArray(productos.categoriaId, categoria));
 
 	//console.log(JSON.stringify(users, null, 2));
 
 	const totalRegistros = cantidad[0].count;
 
-	return {products, totalRegistros};
+	return { products, totalRegistros };
 }
 
 export async function children(parent: string): Promise<Array<{ id: string; name: string }>> {

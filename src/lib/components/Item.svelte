@@ -33,13 +33,13 @@
 		<!--p><small class=''>{product.description}</small></p-->
 		<p class={product.quantity <= 0?'text-red-500':''}>disponible: {product.quantity}</p>
 	</div>
-	<!--{#if product.quantity > 0}
+	{#if product.quantity > 0}
 		<div class="z-30">
 			{#key product}
 				<ButonQuantity product={{ ...product, qtyBuy: 0 }} mostrarCosto={false} />
 			{/key}
 		</div>
-	{/if}-->
+	{/if}
 	
 </div>
 

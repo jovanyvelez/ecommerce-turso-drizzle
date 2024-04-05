@@ -2,7 +2,7 @@
 	import { cart } from '$lib/stores/stores.js';
 	import { jovanyActions } from '$lib/jovanyActions';
 	
-	import type { ProductStore } from '$lib/interfaces/Product';
+	import type { ProductStore } from '$lib/types/Interfaces_or_types';
 
 	export let product: ProductStore;
 
@@ -14,7 +14,7 @@
 	let show = true;
 	let disabled = false; //para habilitar o desabilitar el boton '+' del componente
 	
-	$: cost = quantity * product.prices[0].price;
+	$: cost = quantity * product.precios[0].price;
 
 	const addToCart = (product: ProductStore) => {
 		if(product.quantity === 0)return;
@@ -65,9 +65,9 @@
 {#if show}
 	<button
 		on:click={() => addToCart(mProduct)}
-		class="btn btn-xs btn-outline btn-primary mb-1"
+		class="btn btn-sm btn-outline btn-primary mb-1"
 	>
-		Comprar
+		<span class="text-blue-800">Comprar</span>
 	</button>
 {:else}
 	
