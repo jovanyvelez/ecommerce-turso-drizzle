@@ -5,6 +5,7 @@ import {
 } from '$lib/server/orm/queries';
 
 export async function load({ params }) {
+	
 	type mQuery = {
 		param: string;
 		page: number;
@@ -19,41 +20,33 @@ export async function load({ params }) {
 		query = { param: '', page: 1, por_categoria: false };
 	}
 
-	//const pageSize = 12;
+
+	const pageSize = 12;
 
 	//consultamos todas las categorias hijas y descendientes de la categoria
-	//pasada en el parámetro
-	//let productos;
-	let hijos;
+	//y luego consultamos todos los productos de las categorias
+
+	
 	let descendant;
 	let productos;
+	let hijos;
 
 	if (!query.por_categoria) {
 		//productos = await products_by_name_query(query.param, pageSize, query.page);
 	} else {
-		//productos =  await productos_por_categoria(query.param, pageSize, query.page);
-		hijos = await children(query.param);
-		descendant = await getCategoriesWithDescendants(query.param);
+
+		hijos = await children(query.param); //array con id de categorias hijas
+		descendant = await getCategoriesWithDescendants(query.param); //array con id de categorias descendientes
 		if (descendant && !Array.isArray(descendant)) {
-			productos = await getProductsByListCategories([descendant.root.id, ...descendant.children]);
+			productos = await getProductsByListCategories([descendant.root.id, ...descendant.children], pageSize, query.page);
 		}else{
 			productos = null;
 		}
 	}
-	console.log(productos)
-	/*
-	let {products} = productos
-	const {cantidad} = productos
 
-	products = products.map(producto => {
-		const imageIndexado = producto.images.reduce((ac, el:{name:string ,main?:boolean,secure_url:string})=> {
-			if(el.main)	ac = ac+el.secure_url
-			return ac
-		}, '')
+	const {products, totalRegistros} = productos;
 
-		return {...producto, img: imageIndexado}
 
-	})
-*/
-	return { hijos, descendant, productos };
+
+	return {hijos, products, cantidad: totalRegistros, query, page: query.page, pages: Math.ceil( totalRegistros / pageSize)};
 }

@@ -20,26 +20,26 @@
 	<!-- <img src={imageIndexado.main.secure_url} alt="article" class="" /> -->
 	<!-- <img src={product.images[0].secure_url} alt="article" class="" /> -->
 	<!--img loading="lazy" src={product.img} alt="article" class="" /-->
-	<Image src={product.img} />
+	<Image src={product.imagenes[0].secureUrl} />
 
 	<div>
 		<small><span class="font-bold">code:</span> {product.codigo}</small>
 		<p class="mx-2 text-sm font-bold">{product.name}</p>
 		<p class="text-slate-700">
 			<strong
-				>{product.prices[0].price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' })}</strong
+				>{product.precios[0].price.toLocaleString('es-ES', { style: 'currency', currency: 'COP' })}</strong
 			>
 		</p>
 		<!--p><small class=''>{product.description}</small></p-->
 		<p class={product.quantity <= 0?'text-red-500':''}>disponible: {product.quantity}</p>
 	</div>
-	{#if product.quantity > 0}
+	<!--{#if product.quantity > 0}
 		<div class="z-30">
 			{#key product}
 				<ButonQuantity product={{ ...product, qtyBuy: 0 }} mostrarCosto={false} />
 			{/key}
 		</div>
-	{/if}
+	{/if}-->
 	
 </div>
 
