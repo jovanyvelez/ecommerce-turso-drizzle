@@ -28,13 +28,24 @@ export async function buscarUsuarioPorEmail(email: string | null) {
 
 export async function productosAleatorios(){
 
-	const categoríasConDescendientes = await getRootCategoriesWithDescendants();
+	const categoríasConDescendientes = await getCategoriesWithDescendants();
 
-	const productosDeCategorias = await Promise.all(categoríasConDescendientes.map(async (category) => {
-        const rootAndChildren: string[] = [category.root.id, ...category.children];
-        const productos = await getRandomProductsByListCategories(rootAndChildren);
-        return {root: category.root, productos};
-    }));
+	if (!categoríasConDescendientes) {
+		return null;
+	};
+
+	let productosDeCategorias;
+
+	if(Array.isArray(categoríasConDescendientes) ) {
+
+		productosDeCategorias = await Promise.all(categoríasConDescendientes.map(async (category) => {
+			const rootAndChildren: string[] = [category.root.id, ...category.children];
+			const productos = await getRandomProductsByListCategories(rootAndChildren);
+			return {root: category.root, productos};
+		}));
+	}else{
+		productosDeCategorias = [{root: categoríasConDescendientes.root, productos: categoríasConDescendientes.children}]
+	}
 
 	return productosDeCategorias;
 }
@@ -77,7 +88,7 @@ async function getDescendants(parentId: string) {
 	return descendantsWithChildren;
 }*/
 
-interface Category {
+/* interface Category {
 	id: string;
 	parentId: string | null;
 	children: string[];
@@ -130,9 +141,92 @@ function getCategoryDescendants(categoryMap: Map<string, Category>, categoryId: 
 		}
 	}
 	return descendants;
+} */
+
+
+interface Category {
+    id: string;
+    parentId: string | null;
+    children: string[];
+}
+
+export async function getCategoriesWithDescendants(categoryId?: string) {
+    const categoryMap = new Map();
+    const rootCategories: Array<{id: string, nombre: string}> = [];
+
+    //  Query database and get all categories
+    const allCategories = await db
+        .select({ id: categories.id, nombre: categories.name, parentId: categories.parentId })
+        .from(categories);
+
+    // Build a map of categories where the key is the category id
+    allCategories.forEach((category) => {
+        categoryMap.set(category.id, { id: category.id, nombre: category.nombre, children: [] });
+        if (category.parentId === null) {
+            rootCategories.push({id: category.id, nombre: category.nombre});
+        }
+    });
+
+    // Populate children for each category
+    allCategories.forEach((category) => {
+        if (category.parentId !== null) {
+            categoryMap.get(category.parentId).children.push(category.id);
+        }
+    });
+
+    // Check if categoryId is provided
+    if (categoryId) {
+        const selectedCategory = categoryMap.get(categoryId);
+
+        if (!selectedCategory) {
+            return null; // Category not found
+        }
+
+        // Build the final structure for the selected category
+        const result = {
+            root: { id: selectedCategory.id, nombre: selectedCategory.nombre },
+            children: getCategoryDescendants(categoryMap, categoryId)
+        };
+
+        return result;
+    } else {
+        // Build the final structure for root categories
+        const result = rootCategories.map((root) => {
+            return {
+                root,
+                children: getCategoryDescendants(categoryMap, root.id)
+            };
+        });
+
+        return result;
+    }
+}
+
+function getCategoryDescendants(categoryMap: Map<string, Category>, categoryId: string): string[] {
+    const descendants = [];
+    const category = categoryMap.get(categoryId);
+
+    if (category) {
+        for (const childId of category.children) {
+            descendants.push(childId);
+            descendants.push(...getCategoryDescendants(categoryMap, childId));
+        }
+    }
+    
+    return descendants;
+}
+
+export async function getSingleCategoryDescendants(categoryId: string, categoryIdList: Array<{id: string, name: string}>) {
+	
+	const children = categoryIdList.map((category) => {
+		return category.id
+	})
+
+	const categoryMap = new Map();
 }
 
 export async function getRandomProductsByListCategories(categoria: Array<string>) {
+	
 	/*const randomCategories = await db
     .select({ id: productos.id, name: productos.name, secureUrl: images.secureUrl, precio: prices.price })
     .from(productos)
@@ -142,6 +236,7 @@ export async function getRandomProductsByListCategories(categoria: Array<string>
     .fullJoin(images, eq(productos.id, images.productoId))
     .fullJoin(prices, eq(productos.id, prices.productId));
  */
+
 	const products = await db.query.productos.findMany({
 		where: inArray(productos.categoriaId, categoria),
 		columns: { id: true, name: true },
@@ -166,4 +261,17 @@ export async function getRandomProductsByListCategories(categoria: Array<string>
 	//console.log(JSON.stringify(users, null, 2));
 
 	return products;
+}
+
+export async function children (parent: string): Promise<Array<{id: string, name: string}>> {
+
+	const  hijos = await db.query.categories.findMany({
+		where:eq(categories.parentId, parent),
+		columns: {
+			id: true,
+			name: true
+		}
+	});
+
+	return hijos;
 }

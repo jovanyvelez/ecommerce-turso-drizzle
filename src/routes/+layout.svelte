@@ -6,14 +6,9 @@
    const {categories, user, userType} = data;
 </script>
 
-{#if userType === 'cliente' || userType === null || data.usertype === undefined}
+{#if userType === 'cliente' || userType === null || data.userType === undefined}
 	<MenuClient categorias={data.categories} usuario={data.user} />
 	<SearchBox />
-	<nav class="my-4 flex flex-col sm:flex-row justify-evenly items-center text-blue-800 font-extrabold ">
-		{#each data.categories as categoria (categoria.id) }
-			<a href="/tienda/{JSON.stringify({param:categoria.id, page:1, por_categoria:true})}" class="py-2"><span>{categoria.name} </span></a>				
-		{/each}
-	</nav>
 
 
 	<main class="overflow-auto">

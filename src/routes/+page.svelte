@@ -1,15 +1,16 @@
 <script lang="ts">
 	import { enhance } from '$app/forms';
+	import MostrarCategorias from '$lib/components/MostrarCategorias.svelte';
 	export let data;
-	const { user, datos, userType } = data;
+	const { user, datos, userType, categories } = data;
 </script>
-
-<h1>Hi, {user.email}!</h1>
-<p>Your user ID is {user.id}.</p>
 
 
 
 {#if userType === 'cliente' || userType === undefined}
+
+<MostrarCategorias categorias={categories} />
+
 	{#if datos.length > 0}
 		{#await datos}
 			<p>...waiting</p>
@@ -42,6 +43,9 @@
 	{/if}
 {/if}
 
+{#if userType !== undefined}
+	
 <form method="post" use:enhance>
 	<button class="btn btn-primary">Sign out</button>
 </form>
+{/if}

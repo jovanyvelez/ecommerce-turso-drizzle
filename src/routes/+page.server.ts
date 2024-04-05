@@ -1,12 +1,15 @@
-import { lucia } from "$lib/server/auth/lucia";
+import { /*lucia*/ } from "$lib/server/auth/lucia";
 import { productosAleatorios } from "$lib/server/orm/queries.js";
-import { fail, redirect } from "@sveltejs/kit";
+import { /*fail, redirect*/ } from "@sveltejs/kit";
 
 
 export const load = async (event) => {
+
+	/*
 	if (!event.locals.user) {
 		return redirect(302, "/login");
 	}
+	*/
 
 	return {
 		user: event.locals.user,
@@ -15,6 +18,7 @@ export const load = async (event) => {
 	};
 };
 
+/*
 export const actions = {
 	default: async (event) => {
 		if (!event.locals.session) {
@@ -29,3 +33,4 @@ export const actions = {
 		return redirect(302, "/login");
 	}
 };
+*/

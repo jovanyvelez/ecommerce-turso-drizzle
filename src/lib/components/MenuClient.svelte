@@ -12,7 +12,7 @@
 
 </script>
 
-<nav class="navbar md:justify-around mx-auto bg-white shadow-md">
+<nav class="navbar md:justify-around mx-auto bg-blue-300 shadow-md">
   <!--Comienzo cambios-->
 	
   <div class="flex justify-between items-center text-blue-800 font-extrabold md:w-auto w-screen">
