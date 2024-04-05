@@ -43,7 +43,9 @@ export async function productosAleatorios(){
 			const productos = await getRandomProductsByListCategories(rootAndChildren);
 			return {root: category.root, productos};
 		}));
+
 	}else{
+
 		productosDeCategorias = [{root: categoríasConDescendientes.root, productos: categoríasConDescendientes.children}]
 	}
 
@@ -151,6 +153,7 @@ interface Category {
 }
 
 export async function getCategoriesWithDescendants(categoryId?: string) {
+
     const categoryMap = new Map();
     const rootCategories: Array<{id: string, nombre: string}> = [];
 
@@ -216,14 +219,7 @@ function getCategoryDescendants(categoryMap: Map<string, Category>, categoryId: 
     return descendants;
 }
 
-export async function getSingleCategoryDescendants(categoryId: string, categoryIdList: Array<{id: string, name: string}>) {
-	
-	const children = categoryIdList.map((category) => {
-		return category.id
-	})
 
-	const categoryMap = new Map();
-}
 
 export async function getRandomProductsByListCategories(categoria: Array<string>) {
 	
@@ -256,6 +252,43 @@ export async function getRandomProductsByListCategories(categoria: Array<string>
 		},
 		orderBy: sql`RANDOM()`,
 		limit: 4
+	});
+
+	//console.log(JSON.stringify(users, null, 2));
+
+	return products;
+}
+
+
+export async function getProductsByListCategories(categoria: Array<string>) {
+	
+	/*const randomCategories = await db
+    .select({ id: productos.id, name: productos.name, secureUrl: images.secureUrl, precio: prices.price })
+    .from(productos)
+    .where(inArray(productos.categoriaId, categoria))
+    .orderBy(sql`RANDOM()`)
+    .limit(4)
+    .fullJoin(images, eq(productos.id, images.productoId))
+    .fullJoin(prices, eq(productos.id, prices.productId));
+ */
+
+	const products = await db.query.productos.findMany({
+		where: inArray(productos.categoriaId, categoria),
+		columns: { id: true, name: true },
+		with: {
+			imagenes: {
+				where: eq(images.main, true),
+				columns: {
+					secureUrl: true,
+				}
+			},
+			precios: {
+        where: eq(prices.name, 'main'),
+        columns: {
+          price: true
+        }
+      }
+		},
 	});
 
 	//console.log(JSON.stringify(users, null, 2));

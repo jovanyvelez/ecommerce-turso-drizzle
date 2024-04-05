@@ -1,12 +1,14 @@
-import { children, getCategoriesWithDescendants } from '$lib/server/orm/queries';
-
+import {
+	children,
+	getCategoriesWithDescendants,
+	getProductsByListCategories
+} from '$lib/server/orm/queries';
 
 export async function load({ params }) {
-	
 	type mQuery = {
 		param: string;
 		page: number;
-		por_categoria: boolean
+		por_categoria: boolean;
 	};
 
 	let query: mQuery;
@@ -17,7 +19,6 @@ export async function load({ params }) {
 		query = { param: '', page: 1, por_categoria: false };
 	}
 
-
 	//const pageSize = 12;
 
 	//consultamos todas las categorias hijas y descendientes de la categoria
@@ -25,17 +26,22 @@ export async function load({ params }) {
 	//let productos;
 	let hijos;
 	let descendant;
+	let productos;
 
-	if(!query.por_categoria)
-	{
+	if (!query.por_categoria) {
 		//productos = await products_by_name_query(query.param, pageSize, query.page);
-
-	}else{
+	} else {
 		//productos =  await productos_por_categoria(query.param, pageSize, query.page);
 		hijos = await children(query.param);
 		descendant = await getCategoriesWithDescendants(query.param);
+		if (descendant && !Array.isArray(descendant)) {
+			productos = await getProductsByListCategories([descendant.root.id, ...descendant.children]);
+		}else{
+			productos = null;
+		}
 	}
-/*
+	console.log(productos)
+	/*
 	let {products} = productos
 	const {cantidad} = productos
 
@@ -49,5 +55,5 @@ export async function load({ params }) {
 
 	})
 */
-	return { hijos, descendant };
+	return { hijos, descendant, productos };
 }
