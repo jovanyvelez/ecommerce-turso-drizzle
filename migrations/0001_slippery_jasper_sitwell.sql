@@ -1,1 +1,0 @@
-ALTER TABLE images ADD `main` integer DEFAULT false;

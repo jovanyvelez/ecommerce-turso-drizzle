@@ -1,29 +1,27 @@
 <script lang="ts">
-	import { cart  } from '$lib/stores/stores';
+	import { cart } from '$lib/stores/stores';
 
 	interface categories {
-		id:string,
-		name: string
+		id: string;
+		name: string;
 	}
 
-	export let categorias:categories[];
-	export let usuario: string | null | undefined ;
+	export let categorias: categories[];
+	export let usuario: string | null | undefined;
 	$: items = $cart.length;
-
 </script>
 
 <nav class="navbar md:justify-around mx-auto bg-blue-300 shadow-md">
-  <!--Comienzo cambios-->
-	
-  <div class="flex justify-between items-center text-blue-800 font-extrabold md:w-auto w-screen">
-    <span class="text-xs sm:text-xl md:text-2xl font-[Poppins]">
-		Ecommerce
-        <!--img class="inline h-12" src="https://res.cloudinary.com/dqlbbx7ud/image/upload/v1695397092/tienda/Logo_rbmsi8.svg" alt="Logo"-->
-    </span>
+	<!--Comienzo cambios-->
 
-</div>
+	<div class="flex justify-between items-center text-blue-800 font-extrabold md:w-auto w-screen">
+		<span class="text-xs sm:text-xl md:text-2xl font-[Poppins]">
+			Ecommerce
+			<!--img class="inline h-12" src="https://res.cloudinary.com/dqlbbx7ud/image/upload/v1695397092/tienda/Logo_rbmsi8.svg" alt="Logo"-->
+		</span>
+	</div>
 
-	<div class="md:flex ">
+	<div class="md:flex">
 		<ul class="menu menu-horizontal px-1 text-xs md:text-sm lg:text-xl">
 			<li class=""><a href="/">INICIO</a></li>
 			<!--li>
@@ -45,9 +43,12 @@
 	<div class=" flex-none mr-10">
 		<div class="relative flex">
 			<a href="/carrito">
-				<img src="https://res.cloudinary.com/dqlbbx7ud/image/upload/v1695398056/tienda/Carrito_sk1brn.svg" alt="Carrito" />
+				<img
+					src="https://res.cloudinary.com/dqlbbx7ud/image/upload/v1695398056/tienda/Carrito_sk1brn.svg"
+					alt="Carrito"
+				/>
 			</a>
-			
+
 			<div class="relative flex">
 				{#key items}
 					<span>{items}</span>
@@ -55,5 +56,4 @@
 			</div>
 		</div>
 	</div>
-
 </nav>

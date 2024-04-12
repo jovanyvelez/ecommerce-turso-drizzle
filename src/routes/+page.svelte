@@ -49,3 +49,8 @@
 	<button class="btn btn-primary">Sign out</button>
 </form>
 {/if}
+
+<div class="flex flex-wrap justify-center">
+
+	<button class="btn btn-xl">Ejemplo</button>
+</div>

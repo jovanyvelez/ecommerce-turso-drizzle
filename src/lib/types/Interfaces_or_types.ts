@@ -45,7 +45,7 @@
     qtyBuy: number
   }
 
-  export interface usuario {
+  export interface Usuario {
     "id": string,
     "role_id": number,
     "name": string,

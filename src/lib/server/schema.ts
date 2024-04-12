@@ -163,7 +163,7 @@ export const ordenes = sqliteTable('ordenes', {
 	estado: text('estado', { enum: ['recibido', 'enviado', 'entregado', 'cancelado'] })
 		.default('recibido')
 		.notNull(),
-	fechaDespacho: integer('id', { mode: 'timestamp_ms' }).notNull(),
+	fechaDespacho: integer('fecha_despacho', { mode: 'timestamp_ms' }),
 	notes: text('notes'),
 	valor: real('valor').notNull().default(0.0),
 	codMunicipio: text('cod_municipio'),
@@ -341,3 +341,5 @@ export const sessionRelation = relations(session, ({ one }) => ({
 }));
 
 export type UserInsertSchema = typeof users.$inferInsert;
+
+export type SelectUser = typeof usuarios.$inferSelect;

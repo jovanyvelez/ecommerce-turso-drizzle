@@ -1,6 +1,7 @@
 import { db } from '$lib/server/db';
+import type { ProductStore, Usuario} from '$lib/types/Interfaces_or_types';
 import { isNull, eq, sql, inArray, count } from 'drizzle-orm';
-import { categories, usuarios, productos, images, prices } from '../schema';
+import { categories, usuarios, users, productos, images, prices, ordenes } from '../schema';
 
 export async function mainCategories() {
 	const categorias = await db
@@ -23,6 +24,13 @@ export async function buscarUsuarioPorEmail(email: string | null) {
 
 	const user = users[0];
 	return { id: user.id, roleId: user.roleId, name: user.name };
+}
+
+export async function buscarUsuarioOrden(id:string) {
+	const user = await db.query.usuarios.findFirst({
+		where: eq(usuarios.id, id),
+	});
+	return user;
 }
 
 export async function productosAleatorios() {
@@ -301,4 +309,19 @@ export async function children(parent: string): Promise<Array<{ id: string; name
 	});
 
 	return hijos;
+}
+
+export async function buscarFullUsuario(email: string) {
+	const user = await db.query.usuarios.findFirst({
+		where: eq(usuarios.email, email),
+	})
+	return user;
+}
+
+export async function userSession(email: string) {
+	const user = await db.query.users.findFirst({
+		where: eq(users.email, email),
+	})
+
+	return user;
 }

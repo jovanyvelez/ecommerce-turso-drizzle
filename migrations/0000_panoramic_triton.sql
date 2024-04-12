@@ -34,6 +34,7 @@ CREATE TABLE `detalle_orden` (
 --> statement-breakpoint
 CREATE TABLE `images` (
 	`id` text PRIMARY KEY NOT NULL,
+	`main` integer,
 	`public_id` text,
 	`secure_url` text NOT NULL,
 	`created_at` text DEFAULT (CURRENT_TIMESTAMP) NOT NULL,
@@ -45,12 +46,13 @@ CREATE TABLE `images` (
 );
 --> statement-breakpoint
 CREATE TABLE `ordenes` (
-	`id` integer NOT NULL,
+	`id` text PRIMARY KEY NOT NULL,
 	`direccion_entrega` text NOT NULL,
 	`ciudad_entrega` text NOT NULL,
 	`departamento_entrega` text NOT NULL,
 	`metodo_pago` text,
 	`estado` text DEFAULT 'recibido' NOT NULL,
+	`fecha_despacho` integer,
 	`notes` text,
 	`valor` real DEFAULT 0 NOT NULL,
 	`cod_municipio` text,
