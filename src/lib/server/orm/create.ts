@@ -1,13 +1,14 @@
 import { db } from '$lib/server/db';
-import { /* isNull, eq, sql, inArray, count  */} from 'drizzle-orm';
-import {  ordenes, detalleOrden, type SelectUser } from '../schema';
+import { eq,sql } from 'drizzle-orm';
+import {  ordenes, detalleOrden, productos, type SelectUser } from '../schema';
 import type { ProductStore } from '$lib/types/Interfaces_or_types';
 
 
-export async function createOrder(productos: Array<ProductStore>, usuario: SelectUser) {
+export async function createOrder(carrito: Array<ProductStore>, usuario: SelectUser) {
 
-    const valor = productos.reduce((a, c: ProductStore) => a + c.precios[0].price * c.qtyBuy, 0);
+    const valor = carrito.reduce((a, c: ProductStore) => a + c.precios[0].price * c.qtyBuy, 0);
 
+	
 	const order = await db.insert(ordenes).values({
 		direccionEntrega: usuario.direccion,
 		ciudadEntrega: usuario.ciudad,
@@ -18,12 +19,11 @@ export async function createOrder(productos: Array<ProductStore>, usuario: Selec
         valor
 	}).returning({numOrder: ordenes.id});
 
-    console.log(order);
     /**
 	 * Le ponemos el codigo de la orden a cada item del detalle en el array
 	*/ 
 
-	const orderProducts = productos.map((product) => {
+	const orderProducts = carrito.map((product) => {
 		return {
 			productId: product.id,
 			quantity: product.qtyBuy,
@@ -38,19 +38,20 @@ export async function createOrder(productos: Array<ProductStore>, usuario: Selec
 	 */
 
 	await db.insert(detalleOrden).values(orderProducts);
-/*
-	import { eq } from 'drizzle-orm';
-	import { db } from '../drizzle/db';
-	import { suppliers } from '../drizzle/schema';
-	
-	const { id } = req.params;
-	
-	await db
-		.update(suppliers)
-		.set({
-		  city: 'TestCity1Updated',
-		  country: 'TestCountry1Updated',
+
+	/**
+	 * Actualizamos en inventario final por producto en la tabla productos
+	 */
+
+	await Promise.all(
+		carrito.map(async (element) => {
+			await db.update(productos)
+			.set({ quantity: sql`productos.quantity - ${element.qtyBuy}` })
+			.where(eq(productos.id, element.id));
 		})
-		.where(eq(suppliers.id, id));
-*/
+	);
+
+
+
+
 }
