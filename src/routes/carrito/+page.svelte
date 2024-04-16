@@ -52,9 +52,6 @@
 
 	const guardar = () => {
 		return async ({ result }: { result: Result }) => {
-			console.log(result.data);
-			console.log(result.status);
-			console.log(result.type);
 			if (result.data.success) {
 				const parametro = result.data.savedorder as string;
 				$cart = [];

@@ -27,8 +27,6 @@ export const actions = {
 
 		const carrito = JSON.parse(data.get("carrito") as string)
 
-		console.log(usuario)
-		console.log(carrito);
 
 		await createOrder(carrito, usuario);
 /* 			

@@ -1,5 +1,4 @@
 import { db } from '$lib/server/db';
-import type { ProductStore, Usuario} from '$lib/types/Interfaces_or_types';
 import { isNull, eq, sql, inArray, count } from 'drizzle-orm';
 import { categories, usuarios, users, productos, images, prices, ordenes } from '../schema';
 
