@@ -1,4 +1,4 @@
-import { fail, redirect } from '@sveltejs/kit';
+import {  redirect } from '@sveltejs/kit';
 import { lucia } from '$lib/server/auth/lucia';
 import { Argon2id } from 'oslo/password';
 import { superValidate, message } from 'sveltekit-superforms';
@@ -8,12 +8,13 @@ import { userSession } from '$lib/server/orm/queries.js';
 
 const userSchema = z.object({
 	email: z.string().email(),
-	password: z
+	password: z.string().min(2).trim()
+	/*password: z
 		.string()
 		.min(6)
 		.max(255)
 		.regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/)
-		.trim(),
+		.trim(),*/
 });
 
 export const load = async (event) => {

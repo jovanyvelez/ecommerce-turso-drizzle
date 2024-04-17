@@ -1,9 +1,8 @@
 import type {  Actions } from './$types';
 
 import { buscarUsuarioOrden } from '$lib/server/orm/queries';
-import { createOrder, savedOrder } from '$lib/server/orm/create';
+import { createOrder } from '$lib/server/orm/create';
 //import enviar_correo  from '$lib/server/send_mails/mails'
-
 
 
 export async function load() {
@@ -29,22 +28,17 @@ export const actions = {
 
 
 		await createOrder(carrito, usuario);
-/* 			
 
-
-
-		
-		//console.log(locals.user);
-
-
-
-
-
+		/* 			
 
 		await enviar_correo(usuario.email,'Compra exitosa',`<p>Felicidades tu compra fue exitosa y tu número de orden es <strong>${idOrder}</strong></p>`)
 
-		console.log(idOrder); */
+		console.log(idOrder); 
+
+		*/
+		
 		return { success: true, savedorder: "4" };
 
 	},
+
 }satisfies Actions;
