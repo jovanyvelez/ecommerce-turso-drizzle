@@ -342,4 +342,11 @@ export const sessionRelation = relations(session, ({ one }) => ({
 
 export type UserInsertSchema = typeof users.$inferInsert;
 
+type Usuarios = typeof usuarios.$inferInsert;
+
+export type UsuariosEsquema = Omit<Usuarios,
+	"updatedAt" | "createdAt" | 
+	"asesor" | "descuento" | 
+	"zoneId" | "bussinesUnit" | "roleId">;
+
 export type SelectUser = typeof usuarios.$inferSelect;

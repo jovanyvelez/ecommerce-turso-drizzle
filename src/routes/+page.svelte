@@ -5,13 +5,10 @@
 	const { user, datos, userType, categories } = data;
 </script>
 
-
-
 {#if userType === 'cliente' || userType === undefined}
+	<MostrarCategorias categorias={categories} />
 
-<MostrarCategorias categorias={categories} />
-
-	{#if datos.length > 0}
+	{#if datos && datos.length > 0}
 		{#await datos}
 			<p>...waiting</p>
 		{:then categorias}
@@ -44,13 +41,7 @@
 {/if}
 
 {#if userType !== undefined}
-	
-<form method="post" use:enhance>
-	<button class="btn btn-primary">Sign out</button>
-</form>
+	<form method="post" use:enhance>
+		<button class="btn btn-primary">Sign out</button>
+	</form>
 {/if}
-
-<div class="flex flex-wrap justify-center">
-
-	<button class="btn btn-xl">Ejemplo</button>
-</div>

@@ -1,6 +1,20 @@
 import { z } from 'zod';
 
-export const userSchema = z
+export const UserSchema = z.object({
+	id: z.string().optional(),
+	name: z.string().min(5),
+	phone: z.string().trim(),
+	email: z.string().email().trim(),
+	docType: z.enum(['Cedula', 'Cedula_de_extranjería', 'NIT', 'Pasaporte']),
+	numDoc: z.string().min(8).max(12),
+	departamento: z.string().min(4),
+	ciudad: z.string().min(4),
+	direccion: z.string().min(10)
+})
+
+export type UserCrudSchema = z.infer<typeof UserSchema>;
+
+/* export const userSchema = z
 	.object({
 		id: z.string(),
 		name: z.string({required_error:"Se requiere nombre de usuario"})
@@ -48,4 +62,4 @@ export const userSchema = z
 
 	export const userCreateSchema = userSchema.extend({
 		id: userSchema.shape.id.optional()
-	})
+	}) */

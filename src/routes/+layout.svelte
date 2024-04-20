@@ -8,7 +8,7 @@
 
 {#if userType === 'cliente' || userType === null || data.userType === undefined}
 	<MenuClient categorias={data.categories} usuario={data.user} />
-	<SearchBox />
+	<!--SearchBox /-->
 
 
 	<main class="overflow-auto">

@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
-import { isNull, eq, sql, inArray, count } from 'drizzle-orm';
-import { categories, usuarios, users, productos, images, prices, ordenes } from '../schema';
+import { isNull, eq, sql, inArray, count, asc } from 'drizzle-orm';
+import { categories, usuarios, users, productos, images, prices, ordenes, departamentos, ciudades } from '../schema';
 
 export async function mainCategories() {
 	const categorias = await db
@@ -23,6 +23,67 @@ export async function buscarUsuarioPorEmail(email: string | null) {
 
 	const user = users[0];
 	return { id: user.id, roleId: user.roleId, name: user.name };
+}
+
+export async function findUserByEmailToModify(email: string | null) {
+	
+	if (email === null) {
+		return null;
+	}
+
+	const users = await db.select().from(usuarios).where(eq(usuarios.email, email));
+
+	if (users.length === 0) {
+		return null;
+	}
+
+
+	const user = {
+		id: users[0].id,
+		name: users[0].name,
+		phone: users[0].phone,
+		email: users[0].email,
+		docType:users[0].docType,
+		numDoc: users[0].numDoc,
+		departamento: users[0].departamento,
+		ciudad: users[0].ciudad,
+		direccion:users[0].direccion
+	};
+
+	return user;
+}
+
+export async function buscarDepartamentos() {
+	
+	const departaments = await db.query.departamentos.findMany({
+		orderBy: [asc(departamentos.departamento)],
+		columns: {
+			id: true,
+			departamento: true
+		},
+		with: {
+			ciudades: {
+				orderBy: [asc(ciudades.ciudad)],
+				columns:
+				 {
+					id: true,
+					ciudad: true
+			
+				 }
+			}
+		}
+	});
+	
+	const index = new Map();
+	const allDepartments: Array<{ id: string; name: string }> = [];
+
+	departaments.forEach((d) => {
+		index.set(d.id, d);
+		allDepartments.push({ id: d.id, name: d.departamento });
+	});
+
+	
+	return {departments: allDepartments, index};
 }
 
 export async function buscarUsuarioOrden(id:string) {

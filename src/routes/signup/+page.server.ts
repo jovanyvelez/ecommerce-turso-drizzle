@@ -58,7 +58,7 @@ export const actions = {
 		} catch (e) {
 			if (e instanceof LibsqlError && e.code === "SQLITE_CONSTRAINT_UNIQUE") {
 				return fail(400, {
-					message: "Username already used"
+					message: "Ya existe ese nombre de usuario"
 				});
 			}
 			return fail(500, {

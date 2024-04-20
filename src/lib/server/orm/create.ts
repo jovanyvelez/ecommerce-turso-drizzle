@@ -51,6 +51,8 @@ export async function createOrder(carrito: Array<ProductStore>, usuario: SelectU
 		})
 	);
 
+	return order[0].numOrder;
+
 
 
 
