@@ -20,7 +20,7 @@
 	<form method="post" action="?/login" use:enhance>
 		
 		<div>
-		<label for="email">Email</label>
+		<label for="email">Tu direccion Email</label>
 		<input
 			type="email"
 			name="email"
@@ -32,12 +32,12 @@
 		/><br />
 		{#if $errors.email}<p class="text-red-500">{$errors.email}</p>{/if}
 	</div>
-		<label for="password">Password </label>
+		<label for="password">Tu num de documento </label>
 		<input
-			type="password"
+			type="text"
 			name="password"
 			id="password"
-			placeholder="min 6 letras, una mayuscula y un numero"
+			placeholder="min 6 caracteres"
 			bind:value={$form.password}
 			aria-invalid={$errors.password ? 'true' : undefined}
 			{...$constraints.password}

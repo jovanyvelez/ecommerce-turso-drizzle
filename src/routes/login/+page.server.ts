@@ -8,7 +8,7 @@ import { userSession } from '$lib/server/orm/queries.js';
 
 const userSchema = z.object({
 	email: z.string().email(),
-	password: z.string().min(2).trim()
+	password: z.string().min(6).max(255).trim()
 	/*password: z
 		.string()
 		.min(6)
