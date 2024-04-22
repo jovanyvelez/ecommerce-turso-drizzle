@@ -50,5 +50,5 @@
 			<button type="submit" class=" btn btn-primary btn-md ">Continue</button>
 		</div>
 	</form>
-	<a href="/signup">Create an account</a>
+	<a href="/users">Create an account</a>
 </div>
