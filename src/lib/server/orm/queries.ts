@@ -78,7 +78,7 @@ export async function buscarDepartamentos() {
 	const allDepartments: Array<{ id: string; name: string }> = [];
 
 	departaments.forEach((d) => {
-		index.set(d.id, d);
+		index.set(d.departamento, d);
 		allDepartments.push({ id: d.id, name: d.departamento });
 	});
 
