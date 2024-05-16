@@ -1,6 +1,6 @@
 import { db } from '$lib/server/db';
 import { isNull, eq, sql, inArray, count, asc } from 'drizzle-orm';
-import { categories, usuarios, users, productos, images, prices, ordenes, departamentos, ciudades } from '../schema';
+import { categories, usuarios, users, productos, images, prices,  departamentos, ciudades } from '../schema';
 
 export async function mainCategories() {
 	const categorias = await db
